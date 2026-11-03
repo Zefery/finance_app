@@ -1,0 +1,15 @@
+# Dependency & build outputs
+node_modules/
+dist/
+build/
+
+# Environment Variables (Sangat penting agar password DB tidak ter-expose)
+.env
+
+# Log files
+*.log
+npm-debug.log*
+
+# System files
+.DS_Store
+Thumbs.db
