@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-// GET /api/budgets - Ambil data budget user
+// GET /api/budgets
 const getBudgets = async (req, res) => {
   const { userId } = req.query;
 
@@ -19,7 +19,7 @@ const getBudgets = async (req, res) => {
   }
 };
 
-// POST /api/budgets - Set atau Update Jatah Anggaran Bulanan
+// POST /api/budgets
 const setBudget = async (req, res) => {
   const { userId, month, year, amount } = req.body;
 
@@ -46,7 +46,7 @@ const setBudget = async (req, res) => {
   }
 };
 
-// GET /api/budgets/summary - Ringkasan Total Pemasukan, Pengeluaran, dan Sisa Jatah
+// GET /api/budgets/summary
 const getBudgetSummary = async (req, res) => {
   const { userId, month, year } = req.query;
 

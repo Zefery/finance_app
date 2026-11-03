@@ -1,0 +1,28 @@
+meta {
+  name: 05 - Tambah Pengeluaran
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:5000/api/transaction
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": 1,
+    "type": "EXPENSE",
+    "amount": 75000,
+    "category": "Makanan",
+    "description": "Nasi Padang",
+    "transactionDate": "2026-11-03"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  forwardAuthorizationHeader: false
+}

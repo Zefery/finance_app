@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-// POST /api/transactions - Tambah Transaksi (Income / Expense)
+// POST /api/transactions
 const createTransaction = async (req, res) => {
   const { userId, type, amount, category, description, transactionDate } = req.body;
 
@@ -11,13 +11,22 @@ const createTransaction = async (req, res) => {
     });
   }
 
+  // Ubah type menjadi Uppercase agar sesuai dengan ENUM PostgreSQL
+  const formattedType = type.toUpperCase();
+  if (formattedType !== 'INCOME' && formattedType !== 'EXPENSE') {
+    return res.status(400).json({
+      success: false,
+      message: 'type harus bernilai INCOME atau EXPENSE',
+    });
+  }
+
   try {
     const query = `
       INSERT INTO transactions (user_id, type, amount, category, description, transaction_date)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
-    const values = [userId, type, amount, category, description || null, transactionDate];
+    const values = [userId, formattedType, amount, category, description || null, transactionDate];
     const result = await pool.query(query, values);
 
     res.status(201).json({ success: true, data: result.rows[0] });
@@ -26,7 +35,7 @@ const createTransaction = async (req, res) => {
   }
 };
 
-// GET /api/transactions - Ambil semua transaksi user (Opsional: Filter Bulan & Tahun)
+// GET /api/transactions
 const getTransactions = async (req, res) => {
   const { userId, month, year } = req.query;
 
@@ -52,7 +61,7 @@ const getTransactions = async (req, res) => {
   }
 };
 
-// GET /api/transactions/trend - Agregasi pengeluaran harian untuk Line Chart React
+// GET /api/transactions/trend
 const getExpenseTrend = async (req, res) => {
   const { userId, month, year } = req.query;
 
